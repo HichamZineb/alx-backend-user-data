@@ -40,10 +40,10 @@ def filter_datum(fields: list,
     """
     Returns the log message with obfuscated fields.
     """
-    return re.sub(
-        re.sub(f'{field}=(.*?){separator}',
-               f'{field}={redaction}{separator}', message)
-    )
+    for field in fields:
+        message = re.sub(f'{field}=(.*?){separator}',
+                         f'{field}={redaction}{separator}', message)
+    return message
 
 
 def get_logger() -> logging.Logger:
