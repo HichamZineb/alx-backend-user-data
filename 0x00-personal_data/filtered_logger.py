@@ -2,6 +2,7 @@
 """
 Filtered logger module
 """
+import re
 import logging
 import os
 import mysql.connector
@@ -30,6 +31,20 @@ class RedactingFormatter(logging.Formatter):
                 message
             )
         return message
+
+
+def filter_datum(fields: list,
+                 redaction: str,
+                 message: str,
+                 separator: str) -> str:
+    """
+    Returns the log message with obfuscated fields.
+    """
+    return re.sub(
+        r'(?<={}=).*?(?={})'.format(separator, separator),
+        redaction,
+        message
+    )
 
 
 def get_logger() -> logging.Logger:
